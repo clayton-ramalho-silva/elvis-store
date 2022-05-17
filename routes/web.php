@@ -25,6 +25,8 @@ Route::get('/', [EmailListController::class, 'create']);
 Route::post('/', [EmailListController::class, 'store']);
 Route::get('/sendemail', [EmailListController::class, 'sendemail'])->name('formSendmail');
 Route::post('/sendemail', [EmailListController::class, 'enviar']);
+Route::get('/remove-email', [EmailListController::class, 'remove']);
+Route::delete('/remove-email', [EmailListController::class, 'destroy'])->name('remover-email');
 
 // Route::get('envio-email', function(){
 

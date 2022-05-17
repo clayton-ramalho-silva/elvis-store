@@ -52,4 +52,18 @@ class EmailListController extends Controller
        return redirect('/')->with('msg', 'Emails enviados com sucesso');
 
     }
+
+    public function remove()
+    {
+        return view('site.removemail');
+    }
+
+    public function destroy(Request $request)
+    {
+        $email = $request->email;
+
+        $deleted = EmailList::where('email', $email)->delete();
+
+        return redirect('/')->with('msg', 'Email deletedo com sucesso');
+    }
 }
