@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\EmailListController;
+use App\Mail\SendMailList;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,3 +23,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [EmailListController::class, 'create']);
 Route::post('/', [EmailListController::class, 'store']);
+Route::get('/sendemail', [EmailListController::class, 'sendemail'])->name('formSendmail');
+Route::post('/sendemail', [EmailListController::class, 'enviar']);
+
+// Route::get('envio-email', function(){
+
+//     $user = new stdClass();
+//     $user->name = 'Robson V. Leite';
+//     $user->email = 'gustavo@upinside.com.br';
+
+//     //return new SendMailList($user);
+
+//     Mail::send(new SendMailList($user));
+// });
