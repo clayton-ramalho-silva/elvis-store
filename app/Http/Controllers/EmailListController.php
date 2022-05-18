@@ -37,19 +37,27 @@ class EmailListController extends Controller
     public function enviar(Request $request)
     {
 
-       $users = EmailList::all();
+       $validated = $request->validate([
+           'subject' => 'required|max:255',
+           'elvismail' => 'required',
+       ]);
+
+       if($validated){
+           $users = EmailList::all();
 
 
-       $subject = $request->subject;
-       $elvismail = $request->elvismail;
+           $subject = $request->subject;
+           $elvismail = $request->elvismail;
 
-       foreach($users as $user){
-        //return new SendMailList($user, $subject, $elvismail);
-        //Mail::send(new SendMailList($user, $subject, $elvismail));
-        \App\Jobs\SendMailList::dispatch($user, $subject, $elvismail)->delay(now()->addSeconds('15'));
+           foreach($users as $user){
+            //return new SendMailList($user, $subject, $elvismail);
+            //Mail::send(new SendMailList($user, $subject, $elvismail));
+            \App\Jobs\SendMailList::dispatch($user, $subject, $elvismail)->delay(now()->addSeconds('15'));
+           }
+
+           return redirect('/')->with('msg', 'Emails enviados com sucesso');
+
        }
-
-       return redirect('/')->with('msg', 'Emails enviados com sucesso');
 
     }
 
@@ -63,6 +71,26 @@ class EmailListController extends Controller
         $email = $request->email;
 
         $deleted = EmailList::where('email', $email)->delete();
+
+        return redirect('/')->with('msg', 'Email deletedo com sucesso');
+    }
+
+    public function listarEmail()
+    {
+        $users = EmailList::all();
+
+        return view('site.listar-email', compact('users'));
+    }
+
+    public function deletarEmail(Request $request)
+    {
+        $todelete = $request->todelete;
+
+        foreach ($todelete as $delete_id) {
+
+            $user = EmailList::find($delete_id);
+            $user->delete();
+        }
 
         return redirect('/')->with('msg', 'Email deletedo com sucesso');
     }
