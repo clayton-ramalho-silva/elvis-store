@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmailListController;
+use App\Http\Controllers\LoginController;
 use App\Mail\SendMailList;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -21,14 +22,19 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::get('/', [EmailListController::class, 'create']);
+Route::get('/', [EmailListController::class, 'create'])->name('home');
 Route::post('/', [EmailListController::class, 'store']);
-Route::get('/sendemail', [EmailListController::class, 'sendemail'])->name('formSendmail');
+Route::get('/sendemail', [EmailListController::class, 'sendemail'])->name('formSendmail')->middleware('auth');
 Route::post('/sendemail', [EmailListController::class, 'enviar']);
-Route::get('/remove-email', [EmailListController::class, 'remove']);
+Route::get('/remove-email', [EmailListController::class, 'remove'])->name('cliente-remover-email');
 Route::delete('/remove-email', [EmailListController::class, 'destroy'])->name('remover-email');
-Route::get('/listar-email', [EmailListController::class, 'listarEmail'])->name('listar-email');
-Route::post('/listar-email', [EmailListController::class, 'deletarEmail'])->name('deletar-email');
+
+Route::get('/listar-email', [EmailListController::class, 'listarEmail'])->name('listar-email')->middleware('auth');
+Route::post('/listar-email', [EmailListController::class, 'deletarEmail'])->name('deletar-email')->middleware('auth');
+
+Route::get('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/login', [LoginController::class, 'authenticate']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 

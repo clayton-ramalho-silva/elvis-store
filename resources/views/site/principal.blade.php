@@ -16,7 +16,46 @@
     {{-- Topo --}}
 <div class="container">
     <header>
-        <h1>MAKEMEELVIS.COM</h1>
+        <nav class="navbar navbar-expand-sm bg-light navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">MakeMeElvis</a>
+            </div>
+            <div class="container-fluid">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link active" href="{{ route('home') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('cliente-remover-email') }}">Quero Remover Email</a>
+                </li>
+                @auth
+                <li class="nav-item">
+                   <a class="nav-link" href="{{ route('formSendmail') }}">Enviar Promoção</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="{{ route('listar-email') }}">Deletar Emails</a>
+                 </li>
+
+                @endauth
+                @guest
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('login') }}">Login</a>
+                </li>
+
+                @endguest
+                @auth
+                <li class="nav-item">
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+
+                        <button type="submit" class="btn btn-primary">Sair</button>
+                      </form>
+                </li>
+
+                @endauth
+              </ul>
+            </div>
+          </nav>
     </header>
 </div>
     {{-- Conteudo Principal --}}
